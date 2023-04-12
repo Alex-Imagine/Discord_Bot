@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using DSharpPlus;
 using Test_Bot_discord.Commands;
+using DSharpPlus.Entities;
 namespace Test_Bot_discord
 {
     public class Program
@@ -50,6 +50,9 @@ namespace Test_Bot_discord
             }
             catch(Exception e)
             {
+                DiscordEmbedBuilder builder = new DiscordEmbedBuilder();
+                builder.Color = DiscordColor.Red;
+                builder.Description = e.ToString();
                 await eventArgs.Message.RespondAsync(e.ToString());
             }                 
         }

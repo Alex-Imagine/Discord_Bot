@@ -8,7 +8,7 @@ namespace Test_Bot_discord.Commands
     {
         private Database database = new Database();
         private string name = "/show";
-        private string botanswer = "-1";
+        private string botanswer = "";
         public override string Name { get => name;  set => name = value; }
 
         public override async void Execute(DiscordClient sender, DSharpPlus.EventArgs.MessageCreateEventArgs eventArgs)
@@ -29,23 +29,19 @@ namespace Test_Bot_discord.Commands
                 column.Add("    Place_Name    ");
                 table.AddColumn(column);
                 
-                List<Places> places = new List<Places>();
-                places = database.ExecuteQuery<Places>("SELECT * FROM places.coords_places", false) as List<Places>;
-                botanswer = "";
+                List<Places> places = database.ExecuteQuery<Places>("SELECT * FROM places.coords_places", false) as List<Places>;
 
                 if (BotConfig.isExecutting)
                 {
-                    for (int index = 0; index < places.Count; index++)
+                    foreach (Places place in places)
                     {
-
-                        botanswer += "  " + places[index].X + "    " + places[index].Y + "    " + places[index].Z + "      " + places[index].Place_Type + "        " + places[index].Place_Name + "    " + "\n";
-                        //table.AddRow("  " + places[index].X + "  ", "  " + places[index].Y + "  ", "  " + places[index].Z + "  ", "    " + places[index].Place_Type + "    ", "    " + places[index].Place_Name + "    ");
+                        table.AddRow("  " + place.X + "  ", "  " + place.Y + "  ", "  " + place.Z + "  ", "    " + place.Place_Type + "    ", "    " + place.Place_Name + "    ");
                     }
-                   // botanswer = table.ToString();
+                    botanswer = table.ToStringAlternative();
 
 
                 }
-                else botanswer = "-1";
+                else botanswer = string.Empty;
                 BotConfig.isExecutting = false;
                
 
@@ -55,7 +51,7 @@ namespace Test_Bot_discord.Commands
                 botanswer = "Дождитесь завершения или отмены предыдущей команды";
             }
             builder.Description = botanswer;
-            await eventArgs.Message.RespondAsync(botanswer);
+            await eventArgs.Message.RespondAsync(builder);
 
 
 

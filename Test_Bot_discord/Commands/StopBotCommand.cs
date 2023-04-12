@@ -1,5 +1,4 @@
 ﻿using DSharpPlus;
-using System.Threading.Tasks;
 namespace Test_Bot_discord.Commands
 {
     public class StopBotCommand : Command
